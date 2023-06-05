@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 import aiohttp
 import asyncio
 import json
@@ -5,6 +7,12 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from time import time
 import random
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the API key
+api_key = os.getenv("API_KEY")
 
 async def fetch(session, url):
     async with session.get(url) as response:
@@ -14,7 +22,7 @@ async def extract_reviews(session, num_pages):
     review_data = []
     url_list = []
 
-    base_url = f'https://api.crawlbase.com/scraper?token=hDwx1MeuxHbOF8J0EDMRHQ&url=https://www.glassdoor.com/Reviews/Phillips-66-Reviews-E498821_P'
+    base_url = f'https://api.crawlbase.com/scraper?token=' + api_key'&url=https://www.glassdoor.com/Reviews/Phillips-66-Reviews-E498821_P'
     # base_url = f'https://www.glassdoor.com/Reviews/Berkshire-Hathaway-Reviews-E805672_P'
 
     headers = {'User-Agent': 'Mozilla/5.0'}
@@ -32,7 +40,7 @@ async def extract_reviews(session, num_pages):
     for i, response_text in enumerate(responses):
         soup = BeautifulSoup(response_text, 'html.parser')
         reviews = soup.find_all('div', class_='gdReview')
-        stripped_url = url_list[i].replace('https://api.crawlbase.com/scraper?token=hDwx1MeuxHbOF8J0EDMRHQ&url=', '')
+        stripped_url = url_list[i].replace('https://api.crawlbase.com/scraper?token='+ api_key'&url=', '')
         print(stripped_url)
 
         for review in reviews:
