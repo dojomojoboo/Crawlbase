@@ -6,4 +6,5 @@ response = api.get ('https://example.com/', {
 'autoparse': 'true'
 })
 
+# This prints the response
 print(response)
