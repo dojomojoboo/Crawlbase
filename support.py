@@ -1,6 +1,14 @@
+from dotenv import load_dotenv
+import os
 from proxycrawl import CrawlingAPI
 
-api = CrawlingAPI({ 'token': 'hDwx1MeuxHbOF8J0EDMRHQ' })
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the API key
+api_key = os.getenv("API_KEY")
+
+api = CrawlingAPI({ 'token': api_key })
 
 response = api.get ('https://example.com/', {
 'autoparse': 'true'
